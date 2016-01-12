@@ -1,0 +1,3 @@
+[submodule "MumbleSharp"]
+	path = MumbleSharp
+	url = git://github.com/kluchrj/MumbleSharp
