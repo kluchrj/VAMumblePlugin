@@ -6,7 +6,7 @@ namespace MumblePluginTest
 {
     public class PluginTest
     {
-        public static void Main(string [] args)
+        public static void Main(string[] args)
         {
             string context = "";
 

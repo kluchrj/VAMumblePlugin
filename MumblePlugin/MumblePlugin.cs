@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Threading;
 using MumbleSharp;
 using MumbleSharp.Model;
@@ -18,6 +19,8 @@ namespace MumblePlugin
         private static ConsoleMumbleProtocol protocol;
         private static MumbleConnection connection;
         private static Thread t;
+
+        private static string CurrentDirectory;
 
         // -------------------
 
@@ -38,6 +41,8 @@ namespace MumblePlugin
         
         public static void VA_Init1(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, object> extendedValues)
         {
+            CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
             LoadConfig();
             
             protocol = new ConsoleMumbleProtocol();
@@ -56,12 +61,7 @@ namespace MumblePlugin
             }
             catch (Exception e)
             {
-                using (System.IO.StreamWriter file =
-                    new System.IO.StreamWriter(Environment.SpecialFolder.ProgramFilesX86
-                        + "\\VoiceAttack\\Apps\\Mumble\\server.txt", true))
-                {
-                    file.WriteLine(String.Format("[{0}] Error: {1}", DateTime.Now, e.Message));
-                }
+                LogMessage("Error: " + e.Message);
             }
             
             textValues.Add("VolumeAmount", "");
@@ -70,12 +70,18 @@ namespace MumblePlugin
 
         public static void VA_Exit1(ref Dictionary<string, object> state)
         {
-            t.Abort();
-            connection.Close();
+            try {
+                t.Abort();
+                connection.Close();
+            }
+            catch { }
         }
 
         public static void VA_Invoke1(String context, ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, object> extendedValues)
         {
+            if (connection.State != ConnectionStates.Connected)
+                return;
+
             string text;
 
             if (textValues.TryGetValue("TextToSend", out text))
@@ -98,24 +104,43 @@ namespace MumblePlugin
 
         private static void LoadConfig()
         {
-            FileInfo serverConfigFile = new FileInfo(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) + "\\VoiceAttack\\Apps\\Mumble\\server.txt");
+            FileInfo serverConfigFile = new FileInfo(CurrentDirectory + @"\server.txt");
+
             if (serverConfigFile.Exists)
             {
                 using (StreamReader reader = new StreamReader(serverConfigFile.OpenRead()))
                 {
                     addr = reader.ReadLine();
-                    port = int.Parse(reader.ReadLine());
+                    if (!int.TryParse(reader.ReadLine(), out port))
+                    {
+                        port = 64738;
+                        LogMessage("Warning: Could not read port info, using 64738");
+                    }
+
                     name = reader.ReadLine();
                     pass = reader.ReadLine();
                 }
             }
             else
             {
+                LogMessage("Warning: Could not load server config, using defaults");
+
                 addr = "localhost";
                 port = 64738;
                 name = ".AI";
                 pass = "";
             }
+        }
+
+        private static void LogMessage(string Message)
+        {
+            FileInfo LogFile = new FileInfo(CurrentDirectory + @"\log.txt");
+
+            if (LogFile.Directory.Exists)
+                using (var writer = LogFile.AppendText())
+                {
+                    writer.WriteLine(String.Format("[{0}] {1}", DateTime.Now, Message));
+                }
         }
     }
 }
