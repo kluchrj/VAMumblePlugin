@@ -3,7 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MumblePlugin", "MumblePlugin.csproj", "{4797EDF0-5315-4CDC-A844-AA8015FA6E45}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MumblePlugin", "MumblePlugin\MumblePlugin.csproj", "{4797EDF0-5315-4CDC-A844-AA8015FA6E45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MumblePluginTest", "MumblePluginTest\MumblePluginTest.csproj", "{F8A45B37-7457-4C6E-830A-E332AC92449E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MumbleSharp", "MumbleSharp\MumbleSharp\MumbleSharp.csproj", "{CCF6DB4F-D16F-45F3-920D-E265927BB430}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{22EE2999-2A63-4C22-9187-0A435E9763D7}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +26,14 @@ Global
 		{4797EDF0-5315-4CDC-A844-AA8015FA6E45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4797EDF0-5315-4CDC-A844-AA8015FA6E45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4797EDF0-5315-4CDC-A844-AA8015FA6E45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8A45B37-7457-4C6E-830A-E332AC92449E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8A45B37-7457-4C6E-830A-E332AC92449E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8A45B37-7457-4C6E-830A-E332AC92449E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8A45B37-7457-4C6E-830A-E332AC92449E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCF6DB4F-D16F-45F3-920D-E265927BB430}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCF6DB4F-D16F-45F3-920D-E265927BB430}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCF6DB4F-D16F-45F3-920D-E265927BB430}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCF6DB4F-D16F-45F3-920D-E265927BB430}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
