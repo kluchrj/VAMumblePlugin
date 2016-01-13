@@ -56,25 +56,14 @@ namespace MumblePlugin
             }
             catch (Exception e)
             {
-                string[] lines = { "Error", e.Message };
-                System.IO.File.WriteAllLines(@"C:\Users\Christian\Desktop\WriteLines.txt", lines);
-            }
-            
-            Channel c = null;
-
-            foreach (var channel in protocol.Channels.ToArray())
-            {
-                if (channel.Name == "Illuminati")
+                using (System.IO.StreamWriter file =
+                    new System.IO.StreamWriter(Environment.SpecialFolder.ProgramFilesX86
+                        + "\\VoiceAttack\\Apps\\Mumble\\server.txt", true))
                 {
-                    c = channel;
-                    break;
+                    file.WriteLine(String.Format("[{0}] Error: {1}", DateTime.Now, e.Message));
                 }
             }
-
-            if (c != null)
-                protocol.LocalUser.Channel = c;
             
-
             textValues.Add("VolumeAmount", "");
             textValues.Add("AudioURL", "");
         }
@@ -122,7 +111,7 @@ namespace MumblePlugin
             }
             else
             {
-                addr = "idle.negroserver.com";
+                addr = "localhost";
                 port = 64738;
                 name = ".AI";
                 pass = "";
