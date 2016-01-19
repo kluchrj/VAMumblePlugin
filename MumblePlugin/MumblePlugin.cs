@@ -47,7 +47,8 @@ namespace MumblePlugin
             
             protocol = new ConsoleMumbleProtocol();
 
-            try {
+            try
+            {
                 connection = new MumbleConnection(new IPEndPoint(Dns.GetHostAddresses(addr).First(a => a.AddressFamily == AddressFamily.InterNetwork), port), protocol);
                 connection.Connect(name, pass, new string[0], addr);
 
@@ -63,14 +64,12 @@ namespace MumblePlugin
             {
                 LogMessage("Error: " + e.Message);
             }
-            
-            textValues.Add("VolumeAmount", "");
-            textValues.Add("AudioURL", "");
         }
 
         public static void VA_Exit1(ref Dictionary<string, object> state)
         {
-            try {
+            try
+            {
                 t.Abort();
                 connection.Close();
             }
