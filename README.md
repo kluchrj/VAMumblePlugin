@@ -1,4 +1,4 @@
 # VAMumblePlugin
-A Voice Attack plugin containing the MumbleSharp mumble client.
+A Voice Attack plugin that connects to a mumble server using [MumbleSharp](https://github.com/martindevans/MumbleSharp).
 
-Currently allows voice attack to send chat messages to a mumble server, VIA a mumble client.
+Currently allows voice attack to send chat messages.
