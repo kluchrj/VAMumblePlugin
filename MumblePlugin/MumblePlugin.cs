@@ -31,7 +31,7 @@ namespace MumblePlugin
 
         public static string VA_DisplayInfo()
         {
-            return "Sends messages to mumble chat.";
+            return "A mumble client that can send messages to a server.";
         }
 
         public static Guid VA_Id()
@@ -78,8 +78,11 @@ namespace MumblePlugin
 
         public static void VA_Invoke1(String context, ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, object> extendedValues)
         {
-            if (connection.State != ConnectionStates.Connected)
+            if (connection == null || connection.State != ConnectionStates.Connected)
+            {
+                LogMessage("Error: Not processing command, unable to connect");
                 return;
+            }
 
             string text;
 
