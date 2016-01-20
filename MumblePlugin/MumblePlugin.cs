@@ -6,15 +6,16 @@ using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Threading;
+
 using MumbleSharp;
-using MumbleSharp.Model;
 
 namespace MumblePlugin
 {
     public class VoiceAttackPlugin
     {
-        private static string addr, name, pass;
+        private static string addr, name, pass, chan;
         private static int port;
+        private static bool configLoaded;
 
         private static ConsoleMumbleProtocol protocol;
         private static MumbleConnection connection;
@@ -44,7 +45,10 @@ namespace MumblePlugin
             CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             LoadConfig();
-            
+
+            if (!configLoaded)
+                return;
+
             protocol = new ConsoleMumbleProtocol();
 
             try
@@ -58,6 +62,14 @@ namespace MumblePlugin
                 //When localuser is set it means we're really connected
                 while (!protocol.ReceivedServerSync)
                 {
+                }
+
+                if (chan != "")
+                {
+                    foreach (var c in protocol.Channels.ToArray().Where(u => u.Name == chan.Trim()))
+                    {
+                        protocol.LocalUser.Move(c);
+                    }
                 }
             }
             catch (Exception e)
@@ -106,31 +118,34 @@ namespace MumblePlugin
 
         private static void LoadConfig()
         {
-            FileInfo serverConfigFile = new FileInfo(CurrentDirectory + @"\server.txt");
+            IniFile ini = new IniFile(CurrentDirectory + @"\server.ini");
 
-            if (serverConfigFile.Exists)
+            if (File.Exists(CurrentDirectory + @"\server.ini"))
             {
-                using (StreamReader reader = new StreamReader(serverConfigFile.OpenRead()))
+                addr = ini.IniReadValue("General", "Hostname");
+                if (!int.TryParse(ini.IniReadValue("General", "Port"), out port))
                 {
-                    addr = reader.ReadLine();
-                    if (!int.TryParse(reader.ReadLine(), out port))
-                    {
-                        port = 64738;
-                        LogMessage("Warning: Could not read port info, using 64738");
-                    }
-
-                    name = reader.ReadLine();
-                    pass = reader.ReadLine();
+                    port = 64738;
+                    LogMessage("Warning: Could not read port info, using 64738");
                 }
+
+                name = ini.IniReadValue("General", "Username");
+                pass = ini.IniReadValue("General", "Password");
+                chan = ini.IniReadValue("General", "Channel");
+
+                configLoaded = true;
             }
             else
             {
-                LogMessage("Warning: Could not load server config, using defaults");
+                LogMessage("Error: Could not read server configuration file, generating a new one");
 
-                addr = "localhost";
-                port = 64738;
-                name = ".AI";
-                pass = "";
+                ini.IniWriteValue("General", "Hostname", "localhost");
+                ini.IniWriteValue("General", "Port", "64738");
+                ini.IniWriteValue("General", "Username", ".VABot");
+                ini.IniWriteValue("General", "Password", "");
+                ini.IniWriteValue("General", "Channel", "");
+
+                configLoaded = false;
             }
         }
 

@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsoleMumbleProtocol.cs" />
+    <Compile Include="Ini.cs" />
     <Compile Include="MumblePlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
