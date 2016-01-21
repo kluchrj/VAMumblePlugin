@@ -48,11 +48,10 @@ namespace MumblePlugin
 
             if (!configLoaded)
                 return;
-
-            protocol = new ConsoleMumbleProtocol();
-
+            
             try
             {
+                protocol = new ConsoleMumbleProtocol();
                 connection = new MumbleConnection(new IPEndPoint(Dns.GetHostAddresses(addr).First(a => a.AddressFamily == AddressFamily.InterNetwork), port), protocol);
                 connection.Connect(name, pass, new string[0], addr);
 
