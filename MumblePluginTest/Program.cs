@@ -23,6 +23,8 @@ namespace MumblePluginTest
             Console.Write("Initialized");
             Console.ReadLine();
 
+            Console.WriteLine("Sending a test message...");
+            textValues["TextToSend"] = "This is a test message.";
             VoiceAttackPlugin.VA_Invoke1(context, ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref extendedValues);
 
             Console.Write("Invoked");

@@ -44,9 +44,7 @@ namespace MumblePlugin
         {
             CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-            LoadConfig();
-
-            if (!configLoaded)
+            if (!LoadConfig())
                 return;
             
             try
@@ -115,7 +113,7 @@ namespace MumblePlugin
             }
         }
 
-        private static void LoadConfig()
+        private static bool LoadConfig()
         {
             IniFile ini = new IniFile(CurrentDirectory + @"\server.ini");
 
@@ -146,6 +144,8 @@ namespace MumblePlugin
 
                 configLoaded = false;
             }
+
+            return configLoaded;
         }
 
         private static void LogMessage(string Message)
