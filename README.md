@@ -19,6 +19,7 @@ Currently only allows voice attack to send chat messages.
               ├── protobuf-net.dll
               └── server.ini
   ```
+3. Start VoiceAttack as an Administrator.
 3. Configure `server.ini` to connect to your server.
 4. Enable plugin support in VoiceAttack. You can find this under `Settings -> General -> Enable Plugin Support`.
 5. Restart VoiceAttack.
